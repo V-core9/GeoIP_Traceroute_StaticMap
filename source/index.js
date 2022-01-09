@@ -6,24 +6,26 @@ const publicIp = require('public-ip');
 //! STATIC MAPS PART -----------------
 const StaticMaps = require("staticmaps");
 
-const options = {
-    width: 3840,
-    height: 2160
-};
-const map = new StaticMaps(options);
-
-const polyline = {
-    coords: [],
-    color: '#0000FFBB',
-    width: 3
-};
 
 //! STATIC MAPS PART ----------------
 
 
-const vTraceRoute = async (route) => {
+vTraceRoute = (route) => {
 
+    const options = {
+        width: 3840,
+        height: 2160
+    };
+    const map = new StaticMaps(options);
+    
+    const polyline = {
+        coords: [],
+        color: '#0000FFBB',
+        width: 3
+    };
+    
     var routeData = {
+        publicIp: '',
         target: route,
         _ip: null,
         ipList: [],
@@ -42,6 +44,9 @@ const vTraceRoute = async (route) => {
         endCode: null,
 
         createMap : async () => {
+            polyline.coords = [];
+            routeData.publicIP = await publicIp.v4();
+            routeData.geoIP();
             map.addLine(polyline);
             await map.render();
             await map.image.save('./results/'+routeData.target+'-staticmap.png', { compressionLevel: 0 });
@@ -70,7 +75,6 @@ const vTraceRoute = async (route) => {
                     if (polyline.coords.indexOf([geo.ll[1], geo.ll[0]]) === -1) polyline.coords.push([geo.ll[1], geo.ll[0]]);
                 }
             }
-            this.createMap();
         },
 
         saveData() {
@@ -82,7 +86,7 @@ const vTraceRoute = async (route) => {
         set end(code) {
             console.log(`end: ${code}`);
             this.endCode = code;
-            this.geoIP();
+            this.createMap();
             this.saveData();
         },
 
@@ -93,7 +97,6 @@ const vTraceRoute = async (route) => {
 
     };
 
-    routeData.publicIP = await publicIp.v4();
 
     try {
         const tracer = new Traceroute();
