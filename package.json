@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "geoip-lite": "^1.4.2",
-    "nodejs-traceroute": "^1.2.0",
+    "nodejs-traceroute": "^1.2.1",
     "public-ip": "^4.0.4",
     "staticmaps": "^1.7.0"
   }
