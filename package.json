@@ -13,6 +13,6 @@
     "geoip-lite": "^1.4.2",
     "nodejs-traceroute": "^1.2.0",
     "public-ip": "^4.0.4",
-    "staticmaps": "^1.7.0"
+    "staticmaps": "^1.12.0"
   }
 }
